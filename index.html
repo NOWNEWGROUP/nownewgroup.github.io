@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOWNEW</title>
+<style>
+  @font-face {
+    font-family: 'Inter';
+    src: url('inter-variable.woff2') format('woff2');
+    font-weight: 400 500; font-display: swap;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overscroll-behavior: none; overflow-anchor: none; }
+  body {
+    font-family: 'Inter', "Helvetica Neue", Arial, sans-serif;
+    font-weight: 435;
+    -webkit-font-smoothing: antialiased;
+    background: #fff; color: #000;
+    overflow: hidden;
+  }
+  body.unlocked { overflow: auto; }
+
+  .markwrap {
+    position: fixed; inset: 0; z-index: 3; pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mark {
+    display: flex;
+    font-size: 21.65px; line-height: 1; letter-spacing: 0;
+    font-weight: 410;
+
+    transform: scaleX(1.0326);
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .mark span {
+    display: inline-block;
+
+    transition: transform 0.38s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  .opening {
+    height: 100vh; height: 100svh;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .opening .item {
+    position: relative;
+
+    width: min(calc((100vh - 120px) * 1.5), calc(100% - 2 * var(--pad)));
+    width: min(calc((100svh - 120px) * 1.5), calc(100% - 2 * var(--pad)));
+  }
+  .opening .ph {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    opacity: 0;
+    pointer-events: none;
+  }
+  body.opened .opening .ph { pointer-events: auto; }
+
+  @media (max-width: 639px) {
+    .opening .item { width: calc(100% - 2 * var(--pad)); }
+    .opening .ph {
+      aspect-ratio: auto;
+      height: calc(100vh - 120px); height: calc(100svh - 120px);
+    }
+  }
+  .opening .ph.animate {
+    transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1);
+  }
+
+  :root { --cols: 58; --pad: 20px; --mod: 26px; --rust: 46vh; --logo: 40px; --cap: 13.75px;    }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    grid-auto-rows: var(--mod);
+    gap: 0;
+    padding: 0 var(--pad);
+    margin-bottom: var(--rust);
+  }
+  .grid .item { margin: 0; position: relative; }
+  .ph { background: #e9e9e9; width: 100%; height: 100%; }
+
+  .item .ph {
+    cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cline%20x1%3D%2712%27%20y1%3D%274%27%20x2%3D%2712%27%20y2%3D%2720%27%20stroke%3D%27black%27%20stroke-width%3D%271.6%27%2F%3E%3Cline%20x1%3D%274%27%20y1%3D%2712%27%20x2%3D%2720%27%20y2%3D%2712%27%20stroke%3D%27black%27%20stroke-width%3D%271.54%27%2F%3E%3C%2Fsvg%3E") 12 12, crosshair;
+  }
+
+  .item.open .ph {
+    cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cline%20x1%3D%274%27%20y1%3D%2712%27%20x2%3D%2720%27%20y2%3D%2712%27%20stroke%3D%27black%27%20stroke-width%3D%271.54%27%2F%3E%3C%2Fsvg%3E") 12 12, crosshair;
+  }
+
+  .item .cap {
+    position: absolute; top: 100%; left: 0; width: 100%;
+    margin-top: 10px;
+
+    padding-left: calc(var(--logo) - var(--pad));
+    padding-right: var(--pad);
+    font-size: var(--cap); line-height: 1.45;
+    letter-spacing: 0.024em;
+    visibility: hidden;
+  }
+  .item.open .cap { visibility: visible; }
+
+  .info {
+    position: fixed; top: var(--logo); left: var(--logo); right: var(--logo);
+    z-index: 4; display: flex; align-items: flex-start; justify-content: center;
+    pointer-events: none; visibility: hidden;
+  }
+  body.opened .info { visibility: visible; }
+  .info .knop {
+    pointer-events: auto; cursor: pointer;
+    background: none; border: 0; padding: 0; line-height: 0;
+
+    position: absolute; top: -14px; right: -14px; padding: 14px;
+  }
+
+  .info .knop svg { display: block;
+    width: 16px; height: 16px; stroke: #000; stroke-width: 1.6; fill: none;
+    margin-right: 0.57px; }
+  .info .knop .kruis { display: none; }
+  .info .regel {
+    font-size: var(--cap); line-height: 1.6;
+    letter-spacing: 0.017em;
+    text-align: left; visibility: hidden;
+    margin-left: 0;
+    width: 100%; max-width: none;
+    padding-right: 2em;
+    padding-bottom: 0.4em;
+  }
+  body.info-open .info .regel { pointer-events: auto; }
+  .info .regel a { color: inherit; text-decoration: none; pointer-events: auto;
+    white-space: nowrap; }
+
+  @media (max-width: 639px) {
+    .info { display: block; }
+    .info .regel {
+      text-align: left; max-width: none; margin-left: 0;
+      padding: 0 2.2em 0.6em 0;
+      margin-top: -0.15em;
+    }
+  }
+
+  body.info-open .info .knop .plus { display: none; }
+  body.info-open .info .knop .kruis { display: block; }
+  body.info-open .info .regel { visibility: visible; }
+
+</style>
+</head>
+<body>
+
+  <div class="markwrap">
+    <div class="mark" id="mark"><span id="now">NOW</span><span id="new">NEW</span></div>
+  </div>
+
+  <div class="info">
+    <div class="regel"><p>
+      NOWNEW is lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+      in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Nemo enim
+      ipsam voluptatem Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum. Correspondence at <a href="mailto:info@nownewgroup.com">info@nownewgroup.com</a>, on Instagram at <a href="https://www.instagram.com/nownewgroup/" target="_blank" rel="noopener">@nownewgroup</a></p></div>
+    <button class="knop" id="infoknop" aria-label="Informatie">
+      <svg class="plus" viewBox="0 0 16 16"><line x1="8" y1="0" x2="8" y2="16" stroke-width="1.6"/><line x1="0" y1="8" x2="16" y2="8" stroke-width="1.54"/></svg>
+      <svg class="kruis" viewBox="0 0 16 16"><line x1="2.34" y1="2.34" x2="13.66" y2="13.66" stroke-width="1.57"/><line x1="13.66" y1="2.34" x2="2.34" y2="13.66" stroke-width="1.57"/></svg>
+    </button>
+  </div>
+
+  <div id="feedUp"></div>
+  <div class="opening">
+    <figure class="item">
+      <div class="ph"></div>
+      <figcaption class="cap">Dolor Sit Amet, Consectetur, Identity, 2026</figcaption>
+    </figure>
+  </div>
+  <div id="feed"></div>
+
+  <script>
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
+    var body = document.body,
+        now  = document.getElementById('now'),
+        neu  = document.getElementById('new'),
+        feed = document.getElementById('feed'),
+        feedUp = document.getElementById('feedUp'),
+        M    = 40,
+        played = false;
+
+    var SCHAAL = 1.0326;
+    var meetvlak = document.createElement('canvas').getContext('2d');
+    function inktAanloop(teken, px, dikte) {
+      meetvlak.font = (dikte || 435) + " " + px + "px Inter";
+      var m = meetvlak.measureText(teken);
+      return -m.actualBoundingBoxLeft;
+    }
+    function lijnUit(cap) {
+      var eerste = (cap.textContent || '').charAt(0);
+      if (!eerste) return;
+      var px = parseFloat(getComputedStyle(cap).fontSize) || 13.75;
+      var corr = SCHAAL * inktAanloop('N', 21.65, 410) - inktAanloop(eerste, px);
+      cap.style.textIndent = corr.toFixed(2) + 'px';
+    }
+    function lijnAllesUit() { document.querySelectorAll('.cap').forEach(lijnUit); }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(lijnAllesUit);
+    else lijnAllesUit();
+
+    var FIELD = 58, GUT = 2;
+    var SYS = {};
+    [2, 3, 4, 5, 6].forEach(function (n) {
+      var col = (FIELD - (n - 1) * GUT) / n;
+      SYS[n] = { col: col, x: function (i) { return i * (col + GUT); },
+                 w: function (s) { return s * col + (s - 1) * GUT; } };
+    });
+
+    var SCORE_L = [
+      [ { sys: 2, col: 0, span: 1, y: 0,  h: 20 },
+        { sys: 4, col: 3, span: 1, y: 10, h: 17 } ],
+
+      [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
+
+      [ { sys: 3, col: 1, span: 2, y: 0,  h: 26 },
+        { sys: 4, col: 0, span: 1, y: 9,  h: 18 } ],
+
+      [ { sys: 3, col: 1, span: 1, y: 0,  h: 24 } ],
+
+      [ { sys: 3, col: 0, span: 1, y: 0,  h: 24 },
+        { sys: 5, col: 3, span: 2, y: 7,  h: 15 } ],
+
+      [ { sys: 2, col: 1, span: 1, y: 0,  h: 19 } ]
+    ];
+
+    var SCORE_M = [
+      [ { sys: 3, col: 0, span: 2, y: 0,  h: 26 },
+        { sys: 4, col: 3, span: 1, y: 17, h: 18 } ],
+
+      [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
+
+      [ { sys: 2, col: 1, span: 1, y: 0,  h: 20 },
+        { sys: 4, col: 0, span: 1, y: 12, h: 17 } ],
+
+      [ { sys: 3, col: 1, span: 2, y: 0,  h: 26 } ],
+
+      [ { sys: 2, col: 0, span: 1, y: 0,  h: 20 },
+        { sys: 4, col: 3, span: 1, y: 12, h: 17 } ],
+
+      [ { sys: 3, col: 0, span: 2, y: 0,  h: 24 } ]
+    ];
+
+    var SCORE_S = [
+      [ { sys: 2, col: 0, span: 2, y: 0, h: 39 } ],
+      [ { sys: 4, col: 0, span: 3, y: 0, h: 57 } ],
+      [ { sys: 2, col: 0, span: 2, y: 0, h: 77 } ],
+      [ { sys: 3, col: 0, span: 2, y: 0, h: 51 } ],
+      [ { sys: 4, col: 1, span: 3, y: 0, h: 29 } ],
+      [ { sys: 5, col: 1, span: 4, y: 0, h: 58 } ]
+    ];
+
+    var SCORE_P = [
+      [ { sys: 2, col: 0, span: 1, y: 0,  h: 37 },
+        { sys: 4, col: 3, span: 1, y: 12, h: 17 } ],
+
+      [ { sys: 2, col: 0, span: 2, y: 0,  h: 33 } ],
+
+      [ { sys: 3, col: 1, span: 2, y: 0,  h: 48 },
+        { sys: 4, col: 0, span: 1, y: 8,  h: 17 } ],
+
+      [ { sys: 3, col: 0, span: 1, y: 0,  h: 24 } ],
+
+      [ { sys: 2, col: 1, span: 1, y: 0,  h: 19 },
+        { sys: 4, col: 0, span: 1, y: 10, h: 13 } ],
+
+      [ { sys: 4, col: 1, span: 2, y: 0,  h: 36 } ]
+    ];
+
+    var SCORE = SCORE_L;
+
+    function layout() {
+      var w = document.documentElement.clientWidth,
+          h = document.documentElement.clientHeight;
+      if (w < 640) return { mode: 'S', pad: 17, rust: 22, score: SCORE_S };
+      if (h / w > 1.05) return { mode: 'P', pad: 16, rust: 38, score: SCORE_P };
+      if (w < 1100) return { mode: 'M', pad: 16, rust: 34, score: SCORE_M };
+      return { mode: 'L', pad: 20, rust: 46, score: SCORE_L };
+    }
+
+    var L = null;
+
+    function applyVars() {
+      L = layout();
+      SCORE = L.score;
+      var inner = document.documentElement.clientWidth - 2 * L.pad;
+      var s = document.documentElement.style;
+      s.setProperty('--cols', FIELD);
+      s.setProperty('--pad', L.pad + 'px');
+      s.setProperty('--mod', (inner / FIELD) + 'px');
+      s.setProperty('--rust', L.rust + 'vh');
+      s.setProperty('--logo', ((L.mode === 'S') ? 34 : M) + 'px');
+    }
+    applyVars();
+
+    function place(item) {
+      var s = SYS[item.sys];
+      return { x: s.x(item.col), w: s.w(item.span), y: item.y, h: item.h };
+    }
+
+    function layoutGroep(groep) {
+      var occ = {};
+      function free(r, c, w, h) {
+        for (var y = r; y < r + h; y++) {
+          var row = occ[y]; if (!row) continue;
+          for (var x = c; x < c + w; x++) if (row[x]) return false;
+        }
+        return true;
+      }
+      function mark(r, c, w, h) {
+        for (var y = r; y < r + h; y++) {
+          var row = occ[y] || (occ[y] = {});
+          for (var x = c; x < c + w; x++) row[x] = true;
+        }
+      }
+      return groep.map(function (item) {
+        var p = place(item);
+        var y = (p.y === null ? 0 : p.y);
+        while (!free(y, p.x, p.w, p.h + GUT)) y++;
+        mark(y, p.x, p.w, p.h + GUT);
+        return { x: p.x, w: p.w, y: y, h: p.h };
+      });
+    }
+
+    var TITELS = [
+      'Dolor Sit Amet, Consectetur, Identity, 2026',
+      'Tempor Incididunt, Labore Magna, Editorial, 2026',
+      'Aliqua Veniam, Nostrud Exercitation, 2025',
+      'Ullamco Laboris, Nisi Aliquip, Campaign, 2025',
+      'Commodo Consequat, Duis Aute, 2025',
+      'Irure Reprehenderit, Voluptate Velit, 2024',
+      'Cillum Dolore, Fugiat Nulla, Identity, 2024',
+      'Pariatur Excepteur, Sint Occaecat, 2024',
+      'Cupidatat Proident, Sunt Culpa, 2023',
+      'Officia Deserunt, Mollit Anim, Editorial, 2023',
+      'Est Laborum, Perspiciatis Unde, 2023',
+      'Omnis Iste Natus, Error Voluptatem, 2022'
+    ];
+    var capIdx = 1;
+
+    function buildGrid() {
+      var blok = document.createElement('div');
+      SCORE.forEach(function (groep) {
+        var g = document.createElement('div');
+        g.className = 'grid';
+        layoutGroep(groep).forEach(function (p) {
+          var fig = document.createElement('figure');
+          fig.className = 'item';
+          fig.style.gridColumn = (p.x + 1) + ' / span ' + p.w;
+          fig.style.gridRow = (p.y + 1) + ' / span ' + p.h;
+          var ph = document.createElement('div');
+          ph.className = 'ph';
+          fig.appendChild(ph);
+          var cap = document.createElement('figcaption');
+          cap.className = 'cap';
+          cap.textContent = TITELS[capIdx++ % TITELS.length];
+          fig.appendChild(cap);
+          g.appendChild(fig);
+        });
+        blok.appendChild(g);
+      });
+      return blok;
+    }
+
+    function addDown() { var g = buildGrid(); feed.appendChild(g);
+      g.querySelectorAll('.cap').forEach(function (c) { lijnUit(c); }); }
+
+    function addUp() {
+      var before = document.documentElement.scrollHeight;
+      var gUp = buildGrid();
+      feedUp.insertBefore(gUp, feedUp.firstChild);
+      gUp.querySelectorAll('.cap').forEach(function (c) { lijnUit(c); });
+      var added = document.documentElement.scrollHeight - before;
+      window.scrollTo(0, window.pageYOffset + added);
+    }
+
+    addDown(); addDown();
+
+    var sentinelDown = document.createElement('div');
+    sentinelDown.style.height = '1px';
+    feed.parentNode.appendChild(sentinelDown);
+    new IntersectionObserver(function (e) {
+      if (e[0].isIntersecting && body.classList.contains('unlocked')) addDown();
+    }, { rootMargin: '1500px' }).observe(sentinelDown);
+
+    var sentinelUp = document.createElement('div');
+    sentinelUp.style.height = '1px';
+    feedUp.parentNode.insertBefore(sentinelUp, feedUp);
+    new IntersectionObserver(function (e) {
+      if (e[0].isIntersecting && body.classList.contains('unlocked')) addUp();
+    }, { rootMargin: '1500px' }).observe(sentinelUp);
+
+    document.addEventListener('click', function (e) {
+      var ph = e.target.closest ? e.target.closest('.item .ph') : null;
+      if (!ph) return;
+      var fig = ph.parentElement;
+      var nu = fig.classList.toggle('open');
+      if (nu) { fig.dataset.openY = window.pageYOffset; requestAnimationFrame(vermijdOverlap); }
+    });
+
+    var infoknop = document.getElementById('infoknop');
+    var infoY = 0;
+    var INFO_AFSTAND = 2;
+
+    var SPELING = 12;
+    function vermijdOverlap() {
+      if (!body.classList.contains('info-open')) return;
+      var regel = document.querySelector('.info .regel');
+      if (!regel) return;
+      var a = regel.getBoundingClientRect();
+      document.querySelectorAll('.item.open').forEach(function (fig) {
+        var cap = fig.querySelector('.cap');
+        if (!cap) return;
+        var b = cap.getBoundingClientRect();
+        var raakt = b.right > a.left - SPELING && b.left < a.right + SPELING &&
+                    b.bottom > a.top - SPELING && b.top < a.bottom + SPELING;
+        if (raakt) { fig.classList.remove('open'); delete fig.dataset.openY; }
+      });
+    }
+
+    function infoOpen(aan) {
+      body.classList.toggle('info-open', aan);
+      if (aan) { infoY = window.pageYOffset; requestAnimationFrame(vermijdOverlap); }
+    }
+    infoknop.addEventListener('click', function () {
+      infoOpen(!body.classList.contains('info-open'));
+    });
+    window.addEventListener('scroll', function () {
+      var grens = window.innerHeight * INFO_AFSTAND;
+
+      if (body.classList.contains('info-open') &&
+          Math.abs(window.pageYOffset - infoY) > grens) {
+        body.classList.remove('info-open');
+      }
+
+      vermijdOverlap();
+
+      document.querySelectorAll('.item.open').forEach(function (fig) {
+        var vanaf = parseFloat(fig.dataset.openY);
+        if (isNaN(vanaf)) { fig.dataset.openY = window.pageYOffset; return; }
+        if (Math.abs(window.pageYOffset - vanaf) > grens) {
+          fig.classList.remove('open');
+          delete fig.dataset.openY;
+        }
+      });
+    }, { passive: true });
+
+    function zetMerk() {
+      now.style.transform = ''; neu.style.transform = '';
+      var a = now.getBoundingClientRect(),
+          b = neu.getBoundingClientRect(),
+          vw = window.innerWidth,
+          mx = (L.mode === 'S') ? 34 : M;
+      now.style.transform = 'translateX(' + (Math.round(mx - a.left) / SCHAAL).toFixed(2) + 'px)';
+      neu.style.transform = 'translateX(' + (Math.round((vw - mx) - b.right) / SCHAAL).toFixed(2) + 'px)';
+    }
+
+    function play(dir) {
+      if (played) return;
+      played = true;
+
+      var ph = document.querySelector('.opening .ph');
+      var dist = (window.innerHeight + ph.offsetHeight) / 2 + 20;
+      ph.style.transition = 'none';
+      ph.style.transform = 'translateY(' + ((dir < 0 ? -1 : 1) * dist) + 'px)';
+      ph.style.opacity = '1';
+      void ph.offsetWidth;
+      ph.style.transition = '';
+      ph.classList.add('animate');
+      ph.style.transform = 'translateY(0)';
+
+      zetMerk();
+      body.classList.add('opened');
+      setTimeout(function () {
+        body.classList.add('unlocked');
+        addUp(); addUp();
+      }, 600);
+    }
+
+    window.addEventListener('wheel', function (e) {
+      if (played) return;
+      if (e.cancelable) e.preventDefault();
+      play(e.deltaY < 0 ? -1 : 1);
+    }, { passive: false });
+
+    var touchY = null;
+    window.addEventListener('touchstart', function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+    window.addEventListener('touchmove', function (e) {
+      if (played) return;
+      if (e.cancelable) e.preventDefault();
+      var dy = touchY === null ? 1 : touchY - e.touches[0].clientY;
+      play(dy < 0 ? -1 : 1);
+    }, { passive: false });
+
+    window.addEventListener('keydown', function (e) {
+      if (played) return;
+      var down = [' ', 'ArrowDown', 'PageDown'].indexOf(e.key) >= 0,
+          up   = ['ArrowUp', 'PageUp'].indexOf(e.key) >= 0;
+      if (!down && !up) return;
+      if (e.cancelable) e.preventDefault();
+      play(up ? -1 : 1);
+    });
+
+    var lastMode = L.mode;
+    var lastW = document.documentElement.clientWidth;
+    window.addEventListener('resize', function () {
+      var w = document.documentElement.clientWidth;
+      if (w === lastW) return;
+      lastW = w;
+      applyVars();
+
+      if (L.mode !== lastMode) {
+        lastMode = L.mode;
+        [feed, feedUp].forEach(function (box) {
+          var n = box.querySelectorAll('.grid').length;
+          box.innerHTML = '';
+          for (var i = 0; i < n; i++) box.appendChild(buildGrid());
+        });
+      }
+
+      if (!played) return;
+      now.style.transition = 'none'; neu.style.transition = 'none';
+      zetMerk();
+      requestAnimationFrame(function () { now.style.transition = ''; neu.style.transition = ''; });
+    });
+  </script>
+
+</body>
+</html>
