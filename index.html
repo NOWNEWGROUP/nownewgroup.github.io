@@ -45,6 +45,8 @@
   .opening {
     height: 100vh; height: 100svh;
     display: flex; align-items: center; justify-content: center;
+
+    margin-bottom: 0; margin-bottom: calc(100lvh - 100svh);
   }
   .opening .item {
     position: relative;
@@ -81,8 +83,6 @@
     margin-bottom: var(--rust);
   }
   .grid .item { margin: 0; position: relative; }
-
-  body:not(.opened) .grid { visibility: hidden; }
   .ph { background: #e9e9e9; width: 100%; height: 100%; }
 
   .item .ph {
