@@ -149,8 +149,13 @@
       padding: 0 0 0.6em 0;
       margin-top: -0.15em;
       -webkit-hyphens: auto; hyphens: auto;
+
+      hyphenate-limit-chars: 8 5 3;
+      -webkit-hyphenate-limit-before: 5; -webkit-hyphenate-limit-after: 3;
     }
-    .item .cap { -webkit-hyphens: auto; hyphens: auto; }
+    .item .cap { -webkit-hyphens: auto; hyphens: auto;
+      hyphenate-limit-chars: 8 5 3;
+      -webkit-hyphenate-limit-before: 5; -webkit-hyphenate-limit-after: 3; }
   }
 
   body.info-open .info .knop .plus { display: none; }
