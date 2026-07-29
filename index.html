@@ -103,6 +103,8 @@
     padding-right: var(--pad);
     font-size: var(--cap); line-height: 1.45;
     letter-spacing: 0.024em;
+
+    text-transform: capitalize;
     visibility: hidden;
   }
   .item.open .cap { visibility: visible; }
@@ -148,6 +150,7 @@
       margin-top: -0.15em;
       -webkit-hyphens: auto; hyphens: auto;
     }
+    .item .cap { -webkit-hyphens: auto; hyphens: auto; }
   }
 
   body.info-open .info .knop .plus { display: none; }
@@ -179,7 +182,7 @@
   <div class="opening">
     <figure class="item">
       <div class="ph"></div>
-      <figcaption class="cap">Dolor Sit Amet, Consectetur, Identity, 2026</figcaption>
+      <figcaption class="cap">dolor sit amet, consectetur, identity, 2026</figcaption>
     </figure>
   </div>
   <div id="feed"></div>
@@ -204,7 +207,7 @@
       return -m.actualBoundingBoxLeft;
     }
     function lijnUit(cap) {
-      var eerste = (cap.textContent || '').charAt(0);
+      var eerste = (cap.textContent || '').charAt(0).toUpperCase();
       if (!eerste) return;
       var px = parseFloat(getComputedStyle(cap).fontSize) || 13.75;
       var corr = SCHAAL * inktAanloop('N', 21.65, 410) - inktAanloop(eerste, px);
@@ -338,18 +341,18 @@
     }
 
     var TITELS = [
-      'Dolor Sit Amet, Consectetur, Identity, 2026',
-      'Tempor Incididunt, Labore Magna, Editorial, 2026',
-      'Aliqua Veniam, Nostrud Exercitation, 2025',
-      'Ullamco Laboris, Nisi Aliquip, Campaign, 2025',
-      'Commodo Consequat, Duis Aute, 2025',
-      'Irure Reprehenderit, Voluptate Velit, 2024',
-      'Cillum Dolore, Fugiat Nulla, Identity, 2024',
-      'Pariatur Excepteur, Sint Occaecat, 2024',
-      'Cupidatat Proident, Sunt Culpa, 2023',
-      'Officia Deserunt, Mollit Anim, Editorial, 2023',
-      'Est Laborum, Perspiciatis Unde, 2023',
-      'Omnis Iste Natus, Error Voluptatem, 2022'
+      'dolor sit amet, consectetur, identity, 2026',
+      'tempor incididunt, labore magna, editorial, 2026',
+      'aliqua veniam, nostrud exercitation, 2025',
+      'ullamco laboris, nisi aliquip, campaign, 2025',
+      'commodo consequat, duis aute, 2025',
+      'irure reprehenderit, voluptate velit, 2024',
+      'cillum dolore, fugiat nulla, identity, 2024',
+      'pariatur excepteur, sint occaecat, 2024',
+      'cupidatat proident, sunt culpa, 2023',
+      'officia deserunt, mollit anim, editorial, 2023',
+      'est laborum, perspiciatis unde, 2023',
+      'omnis iste natus, error voluptatem, 2022'
     ];
     var capIdx = 1;
 
