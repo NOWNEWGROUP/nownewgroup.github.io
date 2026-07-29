@@ -64,7 +64,7 @@
     .opening .item { width: calc(100% - 2 * var(--pad)); }
     .opening .ph {
       aspect-ratio: auto;
-      height: calc(100vh - 120px); height: calc(100svh - 120px);
+      height: calc(100vh - 180px); height: calc(100svh - 180px);
     }
   }
   .opening .ph.animate {
@@ -81,6 +81,8 @@
     margin-bottom: var(--rust);
   }
   .grid .item { margin: 0; position: relative; }
+
+  body:not(.opened) .grid { visibility: hidden; }
   .ph { background: #e9e9e9; width: 100%; height: 100%; }
 
   .item .ph {
