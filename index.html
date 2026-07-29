@@ -127,12 +127,15 @@
   .info .regel {
     font-size: var(--cap); line-height: 1.6;
     letter-spacing: 0.017em;
-    text-align: left; visibility: hidden;
+    text-align: left;
+    -webkit-hyphens: none; hyphens: none;
+    visibility: hidden;
     margin-left: 0;
     width: 100%; max-width: none;
-    padding-right: 2em;
     padding-bottom: 0.4em;
   }
+
+  .info .regel .knopruimte { float: right; width: 44px; height: 44px; }
   body.info-open .info .regel { pointer-events: auto; }
   .info .regel a { color: inherit; text-decoration: none; pointer-events: auto;
     white-space: nowrap; }
@@ -140,9 +143,10 @@
   @media (max-width: 639px) {
     .info { display: block; }
     .info .regel {
-      text-align: left; max-width: none; margin-left: 0;
-      padding: 0 2.2em 0.6em 0;
+      max-width: none; margin-left: 0;
+      padding: 0 0 0.6em 0;
       margin-top: -0.15em;
+      -webkit-hyphens: auto; hyphens: auto;
     }
   }
 
@@ -159,14 +163,12 @@
   </div>
 
   <div class="info">
-    <div class="regel"><p>
+    <div class="regel"><p><span class="knopruimte"></span>
       NOWNEW is the practice of Christian Heikoop, designer and creative director in
       Amsterdam. Guided by curiosity rather than product, the work begins with sensing
-      the now, and with the search for what can be done new. Understanding comes first,
+      the now, and with the search for what can be done new. Under&shy;standing comes first,
       then form, across graphic, product, interior and fashion design, to find the new
-      classics of the here and now. Heikoop is founder and creative director of
-      <a href="https://www.instagram.com/maedenofficial/" target="_blank" rel="noopener">Maeden</a>,
-      winner of the <a href="https://andam.fr/" target="_blank" rel="noopener">ANDAM</a> Fashion Accessories Prize. Correspondence at <a href="mailto:info@nownewgroup.com">info@nownewgroup.com</a>, on Instagram at <a href="https://www.instagram.com/nownewgroup/" target="_blank" rel="noopener">@nownewgroup</a></p></div>
+      classics of the here and now. Corre&shy;spondence at <a href="mailto:info@nownewgroup.com">info@nownewgroup.com</a>, on Instagram at <a href="https://www.instagram.com/nownewgroup/" target="_blank" rel="noopener">@nownewgroup</a></p></div>
     <button class="knop" id="infoknop" aria-label="Informatie">
       <svg class="plus" viewBox="0 0 16 16"><line x1="8" y1="0" x2="8" y2="16" stroke-width="1.6"/><line x1="0" y1="8" x2="16" y2="8" stroke-width="1.54"/></svg>
       <svg class="kruis" viewBox="0 0 16 16"><line x1="2.34" y1="2.34" x2="13.66" y2="13.66" stroke-width="1.57"/><line x1="13.66" y1="2.34" x2="2.34" y2="13.66" stroke-width="1.57"/></svg>
