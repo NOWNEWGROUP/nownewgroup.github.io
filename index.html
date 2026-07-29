@@ -370,10 +370,17 @@
       return blok;
     }
 
-    function addDown() { var g = buildGrid(); feed.appendChild(g);
+    var bouwBezig = false;
+    var MAX_GROEPEN = 60;
+
+    function addDown() {
+      if (bouwBezig || feed.querySelectorAll('.grid').length >= MAX_GROEPEN) return;
+      var g = buildGrid(); feed.appendChild(g);
       g.querySelectorAll('.cap').forEach(function (c) { lijnUit(c); }); }
 
     function addUp() {
+      if (bouwBezig || feedUp.querySelectorAll('.grid').length >= MAX_GROEPEN) return;
+      if (window.pageYOffset > 2200) return;
       var before = document.documentElement.scrollHeight;
       var gUp = buildGrid();
       feedUp.insertBefore(gUp, feedUp.firstChild);
@@ -511,25 +518,54 @@
 
     var lastMode = L.mode;
     var lastW = document.documentElement.clientWidth;
+    var herbouwTimer = null;
+
+    var stilTimer = null;
+    function zetMerkStil() {
+      now.style.transition = 'none'; neu.style.transition = 'none';
+      zetMerk();
+      void now.offsetWidth;
+      clearTimeout(stilTimer);
+      stilTimer = setTimeout(function () {
+        now.style.transition = ''; neu.style.transition = '';
+      }, 120);
+    }
+
+    var merkPoging = 0, merkTimer = null;
+    function zetMerkGecontroleerd() {
+      zetMerkStil();
+      clearTimeout(merkTimer);
+      merkTimer = setTimeout(function () {
+        var mx = (L.mode === 'S') ? 34 : M;
+        var mis = Math.abs(now.getBoundingClientRect().left - mx);
+        if (mis > 1 && merkPoging < 8) { merkPoging++; zetMerkGecontroleerd(); }
+        else merkPoging = 0;
+      }, 80);
+    }
+
     window.addEventListener('resize', function () {
       var w = document.documentElement.clientWidth;
       if (w === lastW) return;
       lastW = w;
       applyVars();
+      if (played) zetMerkGecontroleerd();
 
-      if (L.mode !== lastMode) {
+      clearTimeout(herbouwTimer);
+      herbouwTimer = setTimeout(function () {
+        if (L.mode === lastMode) return;
         lastMode = L.mode;
+        bouwBezig = true;
+        var deel = window.pageYOffset / Math.max(1, document.documentElement.scrollHeight);
         [feed, feedUp].forEach(function (box) {
-          var n = box.querySelectorAll('.grid').length;
+          var n = Math.min(box.querySelectorAll('.grid').length, 4);
           box.innerHTML = '';
           for (var i = 0; i < n; i++) box.appendChild(buildGrid());
         });
-      }
-
-      if (!played) return;
-      now.style.transition = 'none'; neu.style.transition = 'none';
-      zetMerk();
-      requestAnimationFrame(function () { now.style.transition = ''; neu.style.transition = ''; });
+        document.querySelectorAll('.cap').forEach(lijnUit);
+        window.scrollTo(0, deel * document.documentElement.scrollHeight);
+        if (played) zetMerkGecontroleerd();
+        requestAnimationFrame(function () { bouwBezig = false; });
+      }, 150);
     });
   </script>
 
