@@ -363,6 +363,8 @@
     ];
     var capIdx = 1;
 
+    var beeldGebruikt = {};
+
     function buildGrid() {
       var blok = document.createElement('div');
       SCORE.forEach(function (groep) {
@@ -376,7 +378,10 @@
           fig.style.gridRow = (p.y + 1) + ' / span ' + p.h;
           var ph = document.createElement('div');
           ph.className = 'ph';
-          if (item.beeld) {
+          var metBeeld = false;
+          if (item.beeld && !beeldGebruikt[item.beeld]) {
+            beeldGebruikt[item.beeld] = true;
+            metBeeld = true;
             var img = document.createElement('img');
             img.src = item.beeld; img.alt = '';
             img.loading = 'lazy';
@@ -385,7 +390,7 @@
           fig.appendChild(ph);
           var cap = document.createElement('figcaption');
           cap.className = 'cap';
-          cap.textContent = (item.titel !== undefined) ? item.titel
+          cap.textContent = (metBeeld && item.titel !== undefined) ? item.titel
                             : TITELS[capIdx++ % TITELS.length];
           fig.appendChild(cap);
           g.appendChild(fig);
@@ -637,6 +642,7 @@
         if (L.mode === lastMode) return;
         lastMode = L.mode;
         bouwBezig = true;
+        beeldGebruikt = {};
         var deel = window.pageYOffset / Math.max(1, document.documentElement.scrollHeight);
         [feed, feedUp].forEach(function (box) {
           var n = Math.min(box.querySelectorAll('.grid').length, 4);
