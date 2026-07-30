@@ -58,9 +58,6 @@
   .opening .ph {
     width: 100%;
     aspect-ratio: 3 / 2;
-
-    background: #00F7A4;
-    background: color(display-p3 0 0.9943 0.6056);
     opacity: 0;
     pointer-events: none;
   }
@@ -90,7 +87,7 @@
 
   body:not(.stroom) .grid { visibility: hidden; }
   .ph { background: #e9e9e9; width: 100%; height: 100%; }
-  .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ph img, .ph video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   .item .ph {
     cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cline%20x1%3D%2712%27%20y1%3D%274%27%20x2%3D%2712%27%20y2%3D%2720%27%20stroke%3D%27black%27%20stroke-width%3D%271.6%27%2F%3E%3Cline%20x1%3D%274%27%20y1%3D%2712%27%20x2%3D%2720%27%20y2%3D%2712%27%20stroke%3D%27black%27%20stroke-width%3D%271.54%27%2F%3E%3C%2Fsvg%3E") 12 12, crosshair;
@@ -112,6 +109,8 @@
     text-transform: capitalize;
     visibility: hidden;
   }
+
+  .item .cap .klein { text-transform: none; }
   .item.open .cap { visibility: visible; }
 
   .info {
@@ -191,8 +190,8 @@
   <div id="feedUp"></div>
   <div class="opening">
     <figure class="item">
-      <div class="ph"></div>
-      <figcaption class="cap">case study, brand green</figcaption>
+      <div class="ph"><video src="beelden/circa.mp4" autoplay muted loop playsinline></video></div>
+      <figcaption class="cap">circa for boee, mobile, 2020</figcaption>
     </figure>
   </div>
   <div id="feed"></div>
@@ -224,6 +223,12 @@
       cap.style.textIndent = corr.toFixed(2) + 'px';
     }
     function lijnAllesUit() { document.querySelectorAll('.cap').forEach(lijnUit); }
+
+    var KLEINWOORDEN = /\b(for|of|and|the|at|on|in|with|by|to|a|an)\b/g;
+    function zetTitel(cap, tekst) {
+      cap.innerHTML = tekst.replace(KLEINWOORDEN, '<span class="klein">$1</span>');
+    }
+    document.querySelectorAll('.cap').forEach(function (c) { zetTitel(c, c.textContent); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(lijnAllesUit);
     else lijnAllesUit();
 
@@ -237,7 +242,7 @@
 
     var SCORE_L = [
       [ { sys: 2, col: 0, span: 1, y: 0,  h: 20 },
-        { sys: 4, col: 3, span: 1, y: 10, h: 17, beeld: 'beelden/beeld-01.jpg' } ],
+        { sys: 4, col: 3, span: 1, y: 10, h: 17 } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
 
@@ -254,7 +259,7 @@
 
     var SCORE_M = [
       [ { sys: 3, col: 0, span: 2, y: 0,  h: 26 },
-        { sys: 4, col: 3, span: 1, y: 17, h: 18, beeld: 'beelden/beeld-01.jpg' } ],
+        { sys: 4, col: 3, span: 1, y: 17, h: 18 } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
 
@@ -271,7 +276,7 @@
 
     var SCORE_S = [
       [ { sys: 2, col: 0, span: 2, y: 0, h: 39 } ],
-      [ { sys: 4, col: 0, span: 3, y: 0, h: 57, beeld: 'beelden/beeld-01.jpg' } ],
+      [ { sys: 4, col: 0, span: 3, y: 0, h: 57 } ],
       [ { sys: 2, col: 0, span: 2, y: 0, h: 77 } ],
       [ { sys: 3, col: 0, span: 2, y: 0, h: 51 } ],
       [ { sys: 4, col: 1, span: 3, y: 0, h: 29 } ],
@@ -280,7 +285,7 @@
 
     var SCORE_P = [
       [ { sys: 2, col: 0, span: 1, y: 0,  h: 37 },
-        { sys: 4, col: 3, span: 1, y: 12, h: 17, beeld: 'beelden/beeld-01.jpg' } ],
+        { sys: 4, col: 3, span: 1, y: 12, h: 17 } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 33 } ],
 
@@ -366,6 +371,23 @@
     ];
     var capIdx = 1;
 
+    var BEELDEN_STAAND = [
+      { b: 'beelden/beeld-01.jpg', t: 'sosa, aluminium prototype, photography ina niehoff, 2022' },
+      { b: 'beelden/beeld-05.jpg', t: 'maeden, still life, photography casper van der linden, spring summer 2026' },
+      { b: 'beelden/beeld-06.jpg', t: 'maeden, boulevard medium in ink, photography casper van der linden, 2024' },
+      { b: 'beelden/beeld-07.jpg', t: 'christian heikoop, photography casper van der linden, 2025' },
+      { b: 'beelden/beeld-08.jpg', t: 'maeden, dustbag, photography casper van der linden, 2025' },
+      { b: 'beelden/beeld-09.jpg', t: 'circa for boee, mobile, 2020' },
+      { b: 'beelden/beeld-10.jpg', t: 'palm leaves, photography david clode, 2020' },
+      { b: 'beelden/beeld-03.jpg', t: 'maeden, seal sample, 2024' }
+    ];
+    var BEELDEN_LIGGEND = [
+      { b: 'beelden/beeld-02.jpg', t: 'sosa for boee, mobile, 2022' },
+      { b: 'beelden/beeld-04.jpg', t: 'maeden, still life, photography casper van der linden, spring summer 2026' },
+      { b: 'beelden/beeld-11.jpg', t: 'field, found image, 2022' }
+    ];
+    var staandIdx = 0, liggendIdx = 0;
+
     function buildGrid() {
       var blok = document.createElement('div');
       SCORE.forEach(function (groep) {
@@ -379,17 +401,17 @@
           fig.style.gridRow = (p.y + 1) + ' / span ' + p.h;
           var ph = document.createElement('div');
           ph.className = 'ph';
-          if (item.beeld) {
-            var img = document.createElement('img');
-            img.src = item.beeld; img.alt = '';
-            img.loading = 'lazy';
-            ph.appendChild(img);
-          }
+          var keuze = (p.w < p.h)
+            ? BEELDEN_STAAND[staandIdx++ % BEELDEN_STAAND.length]
+            : BEELDEN_LIGGEND[liggendIdx++ % BEELDEN_LIGGEND.length];
+          var img = document.createElement('img');
+          img.src = keuze.b; img.alt = '';
+          img.loading = 'lazy';
+          ph.appendChild(img);
           fig.appendChild(ph);
           var cap = document.createElement('figcaption');
           cap.className = 'cap';
-          cap.textContent = (item.titel !== undefined) ? item.titel
-                            : TITELS[capIdx++ % TITELS.length];
+          zetTitel(cap, keuze.t);
           fig.appendChild(cap);
           g.appendChild(fig);
         });
