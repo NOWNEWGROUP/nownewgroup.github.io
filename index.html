@@ -190,8 +190,8 @@
   <div id="feedUp"></div>
   <div class="opening">
     <figure class="item">
-      <div class="ph"><video src="beelden/circa.mp4" autoplay muted loop playsinline></video></div>
-      <figcaption class="cap">circa for boee, mobile, 2020</figcaption>
+      <div class="ph"></div>
+      <figcaption class="cap">dolor sit amet, consectetur, identity, 2026</figcaption>
     </figure>
   </div>
   <div id="feed"></div>
@@ -242,7 +242,7 @@
 
     var SCORE_L = [
       [ { sys: 2, col: 0, span: 1, y: 0,  h: 20 },
-        { sys: 4, col: 3, span: 1, y: 10, h: 17 } ],
+        { sys: 4, col: 3, span: 1, y: 10, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
 
@@ -259,7 +259,7 @@
 
     var SCORE_M = [
       [ { sys: 3, col: 0, span: 2, y: 0,  h: 26 },
-        { sys: 4, col: 3, span: 1, y: 17, h: 18 } ],
+        { sys: 4, col: 3, span: 1, y: 17, h: 18, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
 
@@ -276,7 +276,7 @@
 
     var SCORE_S = [
       [ { sys: 2, col: 0, span: 2, y: 0, h: 39 } ],
-      [ { sys: 4, col: 0, span: 3, y: 0, h: 57 } ],
+      [ { sys: 4, col: 0, span: 3, y: 0, h: 57, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
       [ { sys: 2, col: 0, span: 2, y: 0, h: 77 } ],
       [ { sys: 3, col: 0, span: 2, y: 0, h: 51 } ],
       [ { sys: 4, col: 1, span: 3, y: 0, h: 29 } ],
@@ -285,7 +285,7 @@
 
     var SCORE_P = [
       [ { sys: 2, col: 0, span: 1, y: 0,  h: 37 },
-        { sys: 4, col: 3, span: 1, y: 12, h: 17 } ],
+        { sys: 4, col: 3, span: 1, y: 12, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 33 } ],
 
@@ -371,23 +371,6 @@
     ];
     var capIdx = 1;
 
-    var BEELDEN_STAAND = [
-      { b: 'beelden/beeld-01.jpg', t: 'sosa, aluminium prototype, photography ina niehoff, 2022' },
-      { b: 'beelden/beeld-05.jpg', t: 'maeden, still life, photography casper van der linden, spring summer 2026' },
-      { b: 'beelden/beeld-06.jpg', t: 'maeden, boulevard medium in ink, photography casper van der linden, 2024' },
-      { b: 'beelden/beeld-07.jpg', t: 'christian heikoop, photography casper van der linden, 2025' },
-      { b: 'beelden/beeld-08.jpg', t: 'maeden, dustbag, photography casper van der linden, 2025' },
-      { b: 'beelden/beeld-09.jpg', t: 'circa for boee, mobile, 2020' },
-      { b: 'beelden/beeld-10.jpg', t: 'palm leaves, photography david clode, 2020' },
-      { b: 'beelden/beeld-03.jpg', t: 'maeden, seal sample, 2024' }
-    ];
-    var BEELDEN_LIGGEND = [
-      { b: 'beelden/beeld-02.jpg', t: 'sosa for boee, mobile, 2022' },
-      { b: 'beelden/beeld-04.jpg', t: 'maeden, still life, photography casper van der linden, spring summer 2026' },
-      { b: 'beelden/beeld-11.jpg', t: 'field, found image, 2022' }
-    ];
-    var staandIdx = 0, liggendIdx = 0;
-
     function buildGrid() {
       var blok = document.createElement('div');
       SCORE.forEach(function (groep) {
@@ -401,17 +384,17 @@
           fig.style.gridRow = (p.y + 1) + ' / span ' + p.h;
           var ph = document.createElement('div');
           ph.className = 'ph';
-          var keuze = (p.w < p.h)
-            ? BEELDEN_STAAND[staandIdx++ % BEELDEN_STAAND.length]
-            : BEELDEN_LIGGEND[liggendIdx++ % BEELDEN_LIGGEND.length];
-          var img = document.createElement('img');
-          img.src = keuze.b; img.alt = '';
-          img.loading = 'lazy';
-          ph.appendChild(img);
+          if (item.beeld) {
+            var img = document.createElement('img');
+            img.src = item.beeld; img.alt = '';
+            img.loading = 'lazy';
+            ph.appendChild(img);
+          }
           fig.appendChild(ph);
           var cap = document.createElement('figcaption');
           cap.className = 'cap';
-          zetTitel(cap, keuze.t);
+          zetTitel(cap, (item.titel !== undefined) ? item.titel
+                            : TITELS[capIdx++ % TITELS.length]);
           fig.appendChild(cap);
           g.appendChild(fig);
         });
