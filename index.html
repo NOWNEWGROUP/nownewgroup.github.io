@@ -27,13 +27,10 @@
 
   .markwrap {
     position: fixed; inset: 0; z-index: 3; pointer-events: none;
-
-    mix-blend-mode: difference;
     display: flex; align-items: center; justify-content: center;
   }
   .mark {
     display: flex;
-    color: #fff;
     font-size: 21.65px; line-height: 1; letter-spacing: 0;
     font-weight: 410;
 
@@ -102,18 +99,15 @@
 
   .item .cap {
     position: absolute; top: 100%; left: 0; width: 100%;
+    z-index: 5;
     margin-top: 10px;
 
     padding-left: calc(var(--logo) - var(--pad));
     padding-right: var(--pad);
     font-size: var(--cap); line-height: 1.45;
     letter-spacing: 0.024em;
-
-    text-transform: capitalize;
     visibility: hidden;
   }
-
-  .item .cap .klein { text-transform: none; }
   .item.open .cap { visibility: visible; }
 
   .info {
@@ -194,7 +188,7 @@
   <div class="opening">
     <figure class="item">
       <div class="ph"></div>
-      <figcaption class="cap">dolor sit amet, consectetur, identity, 2026</figcaption>
+      <figcaption class="cap">Dolor sit amet, consectetur, identity, 2026</figcaption>
     </figure>
   </div>
   <div id="feed"></div>
@@ -219,7 +213,7 @@
       return -m.actualBoundingBoxLeft;
     }
     function lijnUit(cap) {
-      var eerste = (cap.textContent || '').charAt(0).toUpperCase();
+      var eerste = (cap.textContent || '').charAt(0);
       if (!eerste) return;
       var px = parseFloat(getComputedStyle(cap).fontSize) || 13.75;
       var corr = SCHAAL * inktAanloop('N', 21.65, 410) - inktAanloop(eerste, px);
@@ -227,11 +221,6 @@
     }
     function lijnAllesUit() { document.querySelectorAll('.cap').forEach(lijnUit); }
 
-    var KLEINWOORDEN = /\b(for|of|and|the|at|on|in|with|by|to|a|an)\b/g;
-    function zetTitel(cap, tekst) {
-      cap.innerHTML = tekst.replace(KLEINWOORDEN, '<span class="klein">$1</span>');
-    }
-    document.querySelectorAll('.cap').forEach(function (c) { zetTitel(c, c.textContent); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(lijnAllesUit);
     else lijnAllesUit();
 
@@ -245,16 +234,16 @@
 
     var SCORE_L = [
       [ { sys: 2, col: 0, span: 1, y: 0,  h: 20 },
-        { sys: 4, col: 3, span: 1, y: 10, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
+        { sys: 4, col: 3, span: 1, y: 10, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype, Boee, Ina Niehoff, 2022' } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
 
       [ { sys: 3, col: 1, span: 2, y: 0,  h: 26 },
         { sys: 4, col: 0, span: 1, y: 9,  h: 18 } ],
 
-      [ { sys: 3, col: 1, span: 1, y: 0,  h: 24 } ],
+      [ { sys: 3, col: 1, span: 1, y: 0,  h: 24, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test, Steel wire chair, Dims, 2021' } ],
 
-      [ { sys: 3, col: 0, span: 1, y: 0,  h: 24 },
+      [ { sys: 3, col: 0, span: 1, y: 0,  h: 24, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test, Steel wire chair, Dims, 2021' },
         { sys: 5, col: 3, span: 2, y: 7,  h: 15 } ],
 
       [ { sys: 2, col: 1, span: 1, y: 0,  h: 19 } ]
@@ -262,7 +251,7 @@
 
     var SCORE_M = [
       [ { sys: 3, col: 0, span: 2, y: 0,  h: 26 },
-        { sys: 4, col: 3, span: 1, y: 17, h: 18, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
+        { sys: 4, col: 3, span: 1, y: 17, h: 18, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype, Boee, Ina Niehoff, 2022' } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 22 } ],
 
@@ -274,21 +263,21 @@
       [ { sys: 2, col: 0, span: 1, y: 0,  h: 20 },
         { sys: 4, col: 3, span: 1, y: 12, h: 17 } ],
 
-      [ { sys: 3, col: 0, span: 2, y: 0,  h: 24 } ]
+      [ { sys: 3, col: 0, span: 2, y: 0,  h: 24, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test, Steel wire chair, Dims, 2021' } ]
     ];
 
     var SCORE_S = [
       [ { sys: 2, col: 0, span: 2, y: 0, h: 39 } ],
-      [ { sys: 4, col: 0, span: 3, y: 0, h: 57, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
+      [ { sys: 4, col: 0, span: 3, y: 0, h: 57, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype, Boee, Ina Niehoff, 2022' } ],
       [ { sys: 2, col: 0, span: 2, y: 0, h: 77 } ],
-      [ { sys: 3, col: 0, span: 2, y: 0, h: 51 } ],
+      [ { sys: 3, col: 0, span: 2, y: 0, h: 51, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test, Steel wire chair, Dims, 2021' } ],
       [ { sys: 4, col: 1, span: 3, y: 0, h: 29 } ],
       [ { sys: 5, col: 1, span: 4, y: 0, h: 58 } ]
     ];
 
     var SCORE_P = [
       [ { sys: 2, col: 0, span: 1, y: 0,  h: 37 },
-        { sys: 4, col: 3, span: 1, y: 12, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'sosa, aluminium prototype, photography ina niehoff, 2022' } ],
+        { sys: 4, col: 3, span: 1, y: 12, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype, Boee, Ina Niehoff, 2022' } ],
 
       [ { sys: 2, col: 0, span: 2, y: 0,  h: 33 } ],
 
@@ -359,18 +348,18 @@
     }
 
     var TITELS = [
-      'dolor sit amet, consectetur, identity, 2026',
-      'tempor incididunt, labore magna, editorial, 2026',
-      'aliqua veniam, nostrud exercitation, 2025',
-      'ullamco laboris, nisi aliquip, campaign, 2025',
-      'commodo consequat, duis aute, 2025',
-      'irure reprehenderit, voluptate velit, 2024',
-      'cillum dolore, fugiat nulla, identity, 2024',
-      'pariatur excepteur, sint occaecat, 2024',
-      'cupidatat proident, sunt culpa, 2023',
-      'officia deserunt, mollit anim, editorial, 2023',
-      'est laborum, perspiciatis unde, 2023',
-      'omnis iste natus, error voluptatem, 2022'
+      'Dolor sit amet, consectetur, identity, 2026',
+      'Tempor incididunt, labore magna, editorial, 2026',
+      'Aliqua veniam, nostrud exercitation, 2025',
+      'Ullamco laboris, nisi aliquip, campaign, 2025',
+      'Commodo consequat, duis aute, 2025',
+      'Irure reprehenderit, voluptate velit, 2024',
+      'Cillum dolore, fugiat nulla, identity, 2024',
+      'Pariatur excepteur, sint occaecat, 2024',
+      'Cupidatat proident, sunt culpa, 2023',
+      'Officia deserunt, mollit anim, editorial, 2023',
+      'Est laborum, perspiciatis unde, 2023',
+      'Omnis iste natus, error voluptatem, 2022'
     ];
     var capIdx = 1;
 
@@ -396,8 +385,8 @@
           fig.appendChild(ph);
           var cap = document.createElement('figcaption');
           cap.className = 'cap';
-          zetTitel(cap, (item.titel !== undefined) ? item.titel
-                            : TITELS[capIdx++ % TITELS.length]);
+          cap.textContent = (item.titel !== undefined) ? item.titel
+                            : TITELS[capIdx++ % TITELS.length];
           fig.appendChild(cap);
           g.appendChild(fig);
         });
@@ -495,6 +484,54 @@
         }
       });
     }, { passive: true });
+
+    function maakKaart(el) {
+      var nw = el.naturalWidth || el.videoWidth, nh = el.naturalHeight || el.videoHeight;
+      if (!nw || !nh) return null;
+      var c = document.createElement('canvas'); c.width = 16; c.height = 16;
+      var ctx = c.getContext('2d', { willReadFrequently: true });
+      try {
+        ctx.drawImage(el, 0, 0, 16, 16);
+        var d = ctx.getImageData(0, 0, 16, 16).data;
+        var kaart = [];
+        for (var i = 0; i < 256; i++) {
+          kaart.push(0.2126 * d[i*4] + 0.7152 * d[i*4+1] + 0.0722 * d[i*4+2]);
+        }
+        return kaart;
+      } catch (e) { return null; }
+    }
+
+    function helderheidOpPunt(el, x, y) {
+      var kaart = (el.tagName === 'VIDEO') ? maakKaart(el)
+                  : (el.__kaart || (el.__kaart = maakKaart(el)));
+      if (!kaart) return 255;
+      var r = el.getBoundingClientRect();
+      var nw = el.naturalWidth || el.videoWidth, nh = el.naturalHeight || el.videoHeight;
+      var schaal = Math.max(r.width / nw, r.height / nh);
+      var offX = (r.width - nw * schaal) / 2, offY = (r.height - nh * schaal) / 2;
+      var mx = (x - r.left - offX) / (nw * schaal), my = (y - r.top - offY) / (nh * schaal);
+      var kx = Math.min(15, Math.max(0, Math.floor(mx * 16)));
+      var ky = Math.min(15, Math.max(0, Math.floor(my * 16)));
+      return kaart[ky * 16 + kx];
+    }
+
+    function peilLogo() {
+      [now, neu].forEach(function (span) {
+        var r = span.getBoundingClientRect();
+        if (!r.width) return;
+        var y = r.top + r.height / 2;
+        var lichtst = 0, punten = [r.left + r.width * 0.15, r.left + r.width * 0.5, r.left + r.width * 0.85];
+        punten.forEach(function (px) {
+          var el = document.elementFromPoint(px, y);
+          var lum = (el && (el.tagName === 'IMG' || el.tagName === 'VIDEO'))
+                    ? helderheidOpPunt(el, px, y) : 255;
+          if (lum > lichtst) lichtst = lum;
+        });
+        span.style.color = (lichtst < 70) ? '#fff' : '#000';
+      });
+    }
+    window.addEventListener('scroll', peilLogo, { passive: true });
+    setInterval(peilLogo, 400);
 
     function zetMerk() {
       now.style.transform = ''; neu.style.transform = '';
