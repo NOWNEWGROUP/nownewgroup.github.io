@@ -15,7 +15,7 @@
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overscroll-behavior: none; overflow-anchor: none; }
+  html, body { height: 100%; overscroll-behavior: none; }
   body {
     font-family: 'Inter', "Helvetica Neue", Arial, sans-serif;
     font-weight: 435;
@@ -23,7 +23,6 @@
     background: #fff; color: #000;
     overflow: hidden;
   }
-  body.unlocked { overflow: auto; }
 
   .markwrap {
     position: fixed; inset: 0; z-index: 3; pointer-events: none;
@@ -39,130 +38,41 @@
   }
   .mark span {
     display: inline-block;
-
     transition: transform 0.38s cubic-bezier(0.45, 0, 0.55, 1);
+    will-change: transform;
   }
 
-  .opening {
-    height: 100vh; height: 100svh;
-    display: flex; align-items: center; justify-content: center;
-
-    margin-bottom: 0; margin-bottom: calc(100lvh - 100svh);
-  }
-  .opening .item {
-    position: relative;
-
-    width: min(calc((100vh - 120px) * 1.5), calc(100% - 2 * var(--pad)));
-    width: min(calc((100svh - 120px) * 1.5), calc(100% - 2 * var(--pad)));
-  }
-  .opening .ph {
-    width: 100%;
-    aspect-ratio: 3 / 2;
-    opacity: 0;
-    pointer-events: none;
-  }
-  body.opened .opening .ph { pointer-events: auto; }
-
-  @media (max-width: 639px) {
-    .opening .item { width: calc(100% - 2 * var(--pad)); }
-    .opening .ph {
-      aspect-ratio: auto;
-      height: calc(100vh - 180px); height: calc(100svh - 180px);
-    }
-  }
-  .opening .ph.animate {
-    transition: transform 0.6s cubic-bezier(0.45, 0, 0.55, 1);
-  }
-
-  :root { --cols: 58; --pad: 20px; --mod: 26px; --rust: 46vh; --logo: 40px; --cap: 13.75px;    }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(var(--cols), 1fr);
-    grid-auto-rows: var(--mod);
-    gap: 0;
-    padding: 0 var(--pad);
-    margin-bottom: var(--rust);
-  }
-  .grid .item { margin: 0; position: relative; }
-
-  body:not(.stroom) .grid { visibility: hidden; }
-  .ph { background: #e9e9e9; width: 100%; height: 100%; }
-  .ph img, .ph video { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  .item .ph {
-    cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cline%20x1%3D%2712%27%20y1%3D%274%27%20x2%3D%2712%27%20y2%3D%2720%27%20stroke%3D%27black%27%20stroke-width%3D%271.6%27%2F%3E%3Cline%20x1%3D%274%27%20y1%3D%2712%27%20x2%3D%2720%27%20y2%3D%2712%27%20stroke%3D%27black%27%20stroke-width%3D%271.54%27%2F%3E%3C%2Fsvg%3E") 12 12, crosshair;
-  }
-
-  .item.open .ph {
-    cursor: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2724%27%20height%3D%2724%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cline%20x1%3D%274%27%20y1%3D%2712%27%20x2%3D%2720%27%20y2%3D%2712%27%20stroke%3D%27black%27%20stroke-width%3D%271.54%27%2F%3E%3C%2Fsvg%3E") 12 12, crosshair;
-  }
-
-  .item .cap {
-    position: absolute; top: 100%; left: 0; width: 100%;
-    z-index: 5;
-    margin-top: 10px;
-
-    padding-left: calc(var(--logo) - var(--pad));
-    padding-right: var(--pad);
-    font-size: var(--cap); line-height: 1.45;
-    letter-spacing: 0.024em;
+  .regel {
+    position: fixed; left: 0; right: 0;
+    text-align: center;
+    font-size: 13.75px; letter-spacing: 0.017em; line-height: 1.6;
+    padding: 0 40px;
     visibility: hidden;
-  }
-  .item.open .cap { visibility: visible; }
+    will-change: transform;
 
-  .info {
-    position: fixed; top: var(--logo); left: var(--logo); right: var(--logo);
-    z-index: 4; display: flex; align-items: flex-start; justify-content: center;
-    pointer-events: none; visibility: hidden;
+    transition: transform 0.25s cubic-bezier(0.45, 0, 0.55, 1),
+                visibility 0s 0.25s;
   }
-  body.opened .info { visibility: visible; }
-  .info .knop {
-    pointer-events: auto; cursor: pointer;
-    background: none; border: 0; padding: 0; line-height: 0;
+  .regel a { color: #000; text-decoration: none; }
 
-    position: absolute; top: -14px; right: -14px; padding: 14px;
-  }
+  #regelboven .zweef { display: none; }
+  #regelboven a:hover .rust { display: none; }
+  #regelboven a:hover .zweef { display: inline; }
 
-  .info .knop svg { display: block;
-    width: 16px; height: 16px; stroke: #000; stroke-width: 1.6; fill: none;
-    margin-right: 0.57px; }
-  .info .knop .kruis { display: none; }
-  .info .regel {
-    font-size: var(--cap); line-height: 1.6;
-    letter-spacing: 0.017em;
-    text-align: left;
-    -webkit-hyphens: none; hyphens: none;
-    visibility: hidden;
-    margin-left: 0;
-    width: 100%; max-width: none;
-    padding-bottom: 0.4em;
+  #regelboven { top: 40px; transform: translateY(calc(-100% - 41px)); }
+  #regelonder { bottom: 40px; transform: translateY(calc(100% + 41px)); }
+  .regel.aan {
+    visibility: visible;
+    transition: transform 0.25s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
-  .info .regel .knopruimte { float: right; width: 44px; height: 44px; }
-  body.info-open .info .regel { pointer-events: auto; }
-  .info .regel a { color: inherit; text-decoration: none; pointer-events: auto;
-    white-space: nowrap; }
-
+  #regelboven.aan { transform: translateY(0); }
+  #regelonder.aan { transform: translateY(0); }
   @media (max-width: 639px) {
-    .info { display: block; }
-    .info .regel {
-      max-width: none; margin-left: 0;
-      padding: 0 0 0.6em 0;
-      margin-top: -0.15em;
-      -webkit-hyphens: auto; hyphens: auto;
-
-      hyphenate-limit-chars: 9 6 3;
-      -webkit-hyphenate-limit-before: 6; -webkit-hyphenate-limit-after: 3;
-    }
-    .item .cap { -webkit-hyphens: auto; hyphens: auto;
-      hyphenate-limit-chars: 9 6 3;
-      -webkit-hyphenate-limit-before: 6; -webkit-hyphenate-limit-after: 3; }
+    .regel { padding: 0 34px; }
+    #regelboven { top: 34px; }
+    #regelonder { bottom: 34px; }
   }
-
-  body.info-open .info .knop .plus { display: none; }
-  body.info-open .info .knop .kruis { display: block; }
-  body.info-open .info .regel { visibility: visible; }
-
 </style>
 </head>
 <body>
@@ -171,27 +81,8 @@
     <div class="mark" id="mark"><span id="now">NOW</span><span id="new">NEW</span></div>
   </div>
 
-  <div class="info">
-    <div class="regel"><p><span class="knopruimte"></span>
-      NOWNEW is the practice of Christian Heikoop, designer and creative director in
-      Amsterdam. Guided by curiosity rather than product, the work begins with sensing
-      the now, and with the search for what can be done new. Understand&shy;ing comes first,
-      then form, across graphic, product, interior and fashion design, to find the new
-      classics of the here and now. Correspond&shy;ence at <a href="mailto:info@nownewgroup.com">info@nownewgroup.com</a>, on Instagram at <a href="https://www.instagram.com/nownewgroup/" target="_blank" rel="noopener">@nownewgroup</a></p></div>
-    <button class="knop" id="infoknop" aria-label="Informatie">
-      <svg class="plus" viewBox="0 0 16 16"><line x1="8" y1="0" x2="8" y2="16" stroke-width="1.6"/><line x1="0" y1="8" x2="16" y2="8" stroke-width="1.54"/></svg>
-      <svg class="kruis" viewBox="0 0 16 16"><line x1="2.34" y1="2.34" x2="13.66" y2="13.66" stroke-width="1.57"/><line x1="13.66" y1="2.34" x2="2.34" y2="13.66" stroke-width="1.57"/></svg>
-    </button>
-  </div>
-
-  <div id="feedUp"></div>
-  <div class="opening">
-    <figure class="item">
-      <div class="ph"></div>
-      <figcaption class="cap">Dolor sit amet, consectetur, identity, 2026</figcaption>
-    </figure>
-  </div>
-  <div id="feed"></div>
+  <div class="regel" id="regelboven"><a href="mailto:info@nownewgroup.com"><span class="rust">Contact</span><span class="zweef">E-mail</span></a></div>
+  <div class="regel" id="regelonder">NOWNEW is registered under KvK 67855407 with VAT NL002277924B95, NOWNEW B.V. under KvK 81255403 with VAT NL862020736B01</div>
 
   <script>
     history.scrollRestoration = 'manual';
@@ -200,437 +91,108 @@
     var body = document.body,
         now  = document.getElementById('now'),
         neu  = document.getElementById('new'),
-        feed = document.getElementById('feed'),
-        feedUp = document.getElementById('feedUp'),
         M    = 40,
         played = false;
 
     var SCHAAL = 1.0326;
-    var meetvlak = document.createElement('canvas').getContext('2d');
-    function inktAanloop(teken, px, dikte) {
-      meetvlak.font = (dikte || 435) + " " + px + "px Inter";
-      var m = meetvlak.measureText(teken);
-      return -m.actualBoundingBoxLeft;
-    }
-    function lijnUit(cap) {
-      var eerste = (cap.textContent || '').charAt(0);
-      if (!eerste) return;
-      var px = parseFloat(getComputedStyle(cap).fontSize) || 13.75;
-      var corr = SCHAAL * inktAanloop('N', 21.65, 410) - inktAanloop(eerste, px);
-      cap.style.textIndent = corr.toFixed(2) + 'px';
-    }
-    function lijnAllesUit() { document.querySelectorAll('.cap').forEach(lijnUit); }
-
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(lijnAllesUit);
-    else lijnAllesUit();
-
-    var FIELD = 58, GUT = 2;
-    var SYS = {};
-    [2, 3, 4, 5, 6].forEach(function (n) {
-      var col = (FIELD - (n - 1) * GUT) / n;
-      SYS[n] = { col: col, x: function (i) { return i * (col + GUT); },
-                 w: function (s) { return s * col + (s - 1) * GUT; } };
-    });
-
-    var SCORE_L = [
-      [ { sys: 2, col: 0, span: 1, y: 0,  h: 20, media: [ { src: 'beelden/video-03.mp4' }, { src: 'beelden/video-07.mp4' } ] },
-        { sys: 4, col: 3, span: 1, y: 10, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype for Sosa, Boee, Ina Niehoff, 2022' } ],
-
-      [ { sys: 2, col: 0, span: 2, y: 0,  h: 22, media: [ { src: 'beelden/video-01.mp4' } ] } ],
-
-      [ { sys: 3, col: 1, span: 2, y: 0,  h: 26, media: [ { src: 'beelden/video-06.mp4' }, { src: 'beelden/video-09.mp4' } ] },
-        { sys: 4, col: 0, span: 1, y: 9,  h: 18, media: [ { src: 'beelden/video-02.mp4' } ] } ],
-
-      [ { sys: 3, col: 1, span: 1, y: 0,  h: 24, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test for the steel wire chair, Dims, 2021' } ],
-
-      [ { sys: 3, col: 0, span: 1, y: 0,  h: 24, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test for the steel wire chair, Dims, 2021' },
-        { sys: 5, col: 3, span: 2, y: 7,  h: 15, media: [ { src: 'beelden/video-04.mp4' } ] } ],
-
-      [ { sys: 2, col: 1, span: 1, y: 0,  h: 19, media: [ { src: 'beelden/video-05.mp4' } ] } ]
-    ];
-
-    var SCORE_M = [
-      [ { sys: 3, col: 0, span: 2, y: 0,  h: 26 },
-        { sys: 4, col: 3, span: 1, y: 17, h: 18, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype for Sosa, Boee, Ina Niehoff, 2022' } ],
-
-      [ { sys: 2, col: 0, span: 2, y: 0,  h: 22, media: [ { src: 'beelden/video-01.mp4' } ] } ],
-
-      [ { sys: 2, col: 1, span: 1, y: 0,  h: 20, media: [ { src: 'beelden/video-03.mp4' }, { src: 'beelden/video-07.mp4' } ] },
-        { sys: 4, col: 0, span: 1, y: 12, h: 17, media: [ { src: 'beelden/video-02.mp4' } ] } ],
-
-      [ { sys: 3, col: 1, span: 2, y: 0,  h: 26, media: [ { src: 'beelden/video-06.mp4' }, { src: 'beelden/video-09.mp4' } ] } ],
-
-      [ { sys: 2, col: 0, span: 1, y: 0,  h: 20, media: [ { src: 'beelden/video-05.mp4' } ] },
-        { sys: 4, col: 3, span: 1, y: 12, h: 17, media: [ { src: 'beelden/video-04.mp4' } ] } ],
-
-      [ { sys: 3, col: 0, span: 2, y: 0,  h: 24, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test for the steel wire chair, Dims, 2021' } ]
-    ];
-
-    var SCORE_S = [
-      [ { sys: 2, col: 0, span: 2, y: 0, h: 39, media: [ { src: 'beelden/video-01.mp4' }, { src: 'beelden/video-03.mp4' }, { src: 'beelden/video-05.mp4' } ] } ],
-      [ { sys: 4, col: 0, span: 3, y: 0, h: 57, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype for Sosa, Boee, Ina Niehoff, 2022' } ],
-      [ { sys: 2, col: 0, span: 2, y: 0, h: 77, media: [ { src: 'beelden/video-06.mp4' }, { src: 'beelden/video-09.mp4' } ] } ],
-      [ { sys: 3, col: 0, span: 2, y: 0, h: 51, beeld: 'beelden/beeld-12.jpg', titel: 'Tooling test for the steel wire chair, Dims, 2021' } ],
-      [ { sys: 4, col: 1, span: 3, y: 0, h: 29, media: [ { src: 'beelden/video-02.mp4' } ] } ],
-      [ { sys: 5, col: 1, span: 4, y: 0, h: 58, media: [ { src: 'beelden/video-04.mp4' }, { src: 'beelden/video-07.mp4' } ] } ]
-    ];
-
-    var SCORE_P = [
-      [ { sys: 2, col: 0, span: 1, y: 0,  h: 37, media: [ { src: 'beelden/video-05.mp4' } ] },
-        { sys: 4, col: 3, span: 1, y: 12, h: 17, beeld: 'beelden/beeld-01.jpg', titel: 'Aluminium prototype for Sosa, Boee, Ina Niehoff, 2022' } ],
-
-      [ { sys: 2, col: 0, span: 2, y: 0,  h: 33, media: [ { src: 'beelden/video-01.mp4' } ] } ],
-
-      [ { sys: 3, col: 1, span: 2, y: 0,  h: 48, media: [ { src: 'beelden/video-06.mp4' }, { src: 'beelden/video-09.mp4' } ] },
-        { sys: 4, col: 0, span: 1, y: 8,  h: 17, media: [ { src: 'beelden/video-02.mp4' } ] } ],
-
-      [ { sys: 3, col: 0, span: 1, y: 0,  h: 24, media: [ { src: 'beelden/video-04.mp4' } ] } ],
-
-      [ { sys: 2, col: 1, span: 1, y: 0,  h: 19, media: [ { src: 'beelden/video-03.mp4' } ] },
-        { sys: 4, col: 0, span: 1, y: 10, h: 13, media: [ { src: 'beelden/video-07.mp4' } ] } ],
-
-      [ { sys: 4, col: 1, span: 2, y: 0,  h: 36 } ]
-    ];
-
-    var SCORE = SCORE_L;
 
     function layout() {
-      var w = document.documentElement.clientWidth,
-          h = document.documentElement.clientHeight;
-      if (w < 640) return { mode: 'S', pad: 17, rust: 22, score: SCORE_S };
-      if (h / w > 1.05) return { mode: 'P', pad: 16, rust: 38, score: SCORE_P };
-      if (w < 1100) return { mode: 'M', pad: 16, rust: 34, score: SCORE_M };
-      return { mode: 'L', pad: 20, rust: 46, score: SCORE_L };
+      var w = document.documentElement.clientWidth;
+      if (w < 640) return { mode: 'S' };
+      return { mode: 'L' };
     }
+    var L = layout();
 
-    var L = null;
-
-    function applyVars() {
-      L = layout();
-      SCORE = L.score;
-      var inner = document.documentElement.clientWidth - 2 * L.pad;
-      var s = document.documentElement.style;
-      s.setProperty('--cols', FIELD);
-      s.setProperty('--pad', L.pad + 'px');
-      s.setProperty('--mod', (inner / FIELD) + 'px');
-      s.setProperty('--rust', L.rust + 'vh');
-      s.setProperty('--logo', ((L.mode === 'S') ? 34 : M) + 'px');
-    }
-    applyVars();
-
-    function place(item) {
-      var s = SYS[item.sys];
-      return { x: s.x(item.col), w: s.w(item.span), y: item.y, h: item.h };
-    }
-
-    function layoutGroep(groep) {
-      var occ = {};
-      function free(r, c, w, h) {
-        for (var y = r; y < r + h; y++) {
-          var row = occ[y]; if (!row) continue;
-          for (var x = c; x < c + w; x++) if (row[x]) return false;
-        }
-        return true;
-      }
-      function mark(r, c, w, h) {
-        for (var y = r; y < r + h; y++) {
-          var row = occ[y] || (occ[y] = {});
-          for (var x = c; x < c + w; x++) row[x] = true;
-        }
-      }
-      return groep.map(function (item) {
-        var p = place(item);
-        var y = (p.y === null ? 0 : p.y);
-        while (!free(y, p.x, p.w, p.h + GUT)) y++;
-        mark(y, p.x, p.w, p.h + GUT);
-        return { x: p.x, w: p.w, y: y, h: p.h };
-      });
-    }
-
-    var TITELS = [
-      'Dolor sit amet, consectetur, identity, 2026',
-      'Tempor incididunt, labore magna, editorial, 2026',
-      'Aliqua veniam, nostrud exercitation, 2025',
-      'Ullamco laboris, nisi aliquip, campaign, 2025',
-      'Commodo consequat, duis aute, 2025',
-      'Irure reprehenderit, voluptate velit, 2024',
-      'Cillum dolore, fugiat nulla, identity, 2024',
-      'Pariatur excepteur, sint occaecat, 2024',
-      'Cupidatat proident, sunt culpa, 2023',
-      'Officia deserunt, mollit anim, editorial, 2023',
-      'Est laborum, perspiciatis unde, 2023',
-      'Omnis iste natus, error voluptatem, 2022'
-    ];
-    var capIdx = 1;
-
-    var beeldGebruikt = {};
-
-    var videoKijker = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        var v = e.target;
-        if (e.isIntersecting) {
-          if (!v.src) v.src = v.dataset.src;
-          var p = v.play(); if (p && p.catch) p.catch(function () {});
-        } else if (v.src) {
-          v.pause();
-        }
-      });
-    }, { rootMargin: '600px' });
-
-    function buildGrid() {
-      var blok = document.createElement('div');
-      SCORE.forEach(function (groep) {
-        var g = document.createElement('div');
-        g.className = 'grid';
-        layoutGroep(groep).forEach(function (p, i) {
-          var item = groep[i];
-          var fig = document.createElement('figure');
-          fig.className = 'item';
-          fig.style.gridColumn = (p.x + 1) + ' / span ' + p.w;
-          fig.style.gridRow = (p.y + 1) + ' / span ' + p.h;
-          var ph = document.createElement('div');
-          ph.className = 'ph';
-          var lijst = item.media || (item.beeld ? [{ src: item.beeld, titel: item.titel }] : null);
-          var keus = null;
-          if (lijst) for (var k = 0; k < lijst.length; k++) {
-            if (!beeldGebruikt[lijst[k].src]) { keus = lijst[k]; break; }
-          }
-          if (keus) {
-            beeldGebruikt[keus.src] = true;
-            if (/\.mp4$/.test(keus.src)) {
-              var vid = document.createElement('video');
-              vid.muted = true; vid.loop = true; vid.playsInline = true;
-              vid.setAttribute('muted', ''); vid.setAttribute('playsinline', '');
-              vid.preload = 'none';
-              vid.dataset.src = keus.src;
-              ph.appendChild(vid);
-              videoKijker.observe(vid);
-            } else {
-              var img = document.createElement('img');
-              img.src = keus.src; img.alt = '';
-              img.loading = 'lazy';
-              ph.appendChild(img);
-            }
-          }
-          fig.appendChild(ph);
-          var cap = document.createElement('figcaption');
-          cap.className = 'cap';
-          cap.textContent = (keus && keus.titel !== undefined) ? keus.titel
-                            : TITELS[capIdx++ % TITELS.length];
-          fig.appendChild(cap);
-          g.appendChild(fig);
-        });
-        blok.appendChild(g);
-      });
-      return blok;
-    }
-
-    var bouwBezig = false;
-    var MAX_GROEPEN = 60;
-
-    function addDown() {
-      if (bouwBezig || feed.querySelectorAll('.grid').length >= MAX_GROEPEN) return;
-      var g = buildGrid(); feed.appendChild(g);
-      g.querySelectorAll('.cap').forEach(function (c) { lijnUit(c); }); }
-
-    function addUp() {
-      if (bouwBezig || feedUp.querySelectorAll('.grid').length >= MAX_GROEPEN) return;
-      if (window.pageYOffset > 2200) return;
-      var before = document.documentElement.scrollHeight;
-      var gUp = buildGrid();
-      feedUp.insertBefore(gUp, feedUp.firstChild);
-      gUp.querySelectorAll('.cap').forEach(function (c) { lijnUit(c); });
-      var added = document.documentElement.scrollHeight - before;
-      window.scrollTo(0, window.pageYOffset + added);
-    }
-
-    addDown(); addDown();
-
-    var sentinelDown = document.createElement('div');
-    sentinelDown.style.height = '1px';
-    feed.parentNode.appendChild(sentinelDown);
-    new IntersectionObserver(function (e) {
-      if (e[0].isIntersecting && body.classList.contains('unlocked')) addDown();
-    }, { rootMargin: '1500px' }).observe(sentinelDown);
-
-    var sentinelUp = document.createElement('div');
-    sentinelUp.style.height = '1px';
-    feedUp.parentNode.insertBefore(sentinelUp, feedUp);
-    new IntersectionObserver(function (e) {
-      if (e[0].isIntersecting && body.classList.contains('unlocked')) addUp();
-    }, { rootMargin: '1500px' }).observe(sentinelUp);
-
-    document.addEventListener('click', function (e) {
-      var ph = e.target.closest ? e.target.closest('.item .ph') : null;
-      if (!ph) return;
-      var fig = ph.parentElement;
-      var nu = fig.classList.toggle('open');
-      if (nu) { fig.dataset.openY = window.pageYOffset; requestAnimationFrame(vermijdOverlap); }
-    });
-
-    var infoknop = document.getElementById('infoknop');
-    var infoY = 0;
-    var INFO_AFSTAND = 2;
-
-    var SPELING = 12;
-    function vermijdOverlap() {
-      if (!body.classList.contains('info-open')) return;
-      var regel = document.querySelector('.info .regel');
-      if (!regel) return;
-      var a = regel.getBoundingClientRect();
-      document.querySelectorAll('.item.open').forEach(function (fig) {
-        var cap = fig.querySelector('.cap');
-        if (!cap) return;
-        var b = cap.getBoundingClientRect();
-        var raakt = b.right > a.left - SPELING && b.left < a.right + SPELING &&
-                    b.bottom > a.top - SPELING && b.top < a.bottom + SPELING;
-        if (raakt) { fig.classList.remove('open'); delete fig.dataset.openY; }
-      });
-    }
-
-    function infoOpen(aan) {
-      body.classList.toggle('info-open', aan);
-      if (aan) { infoY = window.pageYOffset; requestAnimationFrame(vermijdOverlap); }
-    }
-    infoknop.addEventListener('click', function () {
-      infoOpen(!body.classList.contains('info-open'));
-    });
-    window.addEventListener('scroll', function () {
-      var grens = window.innerHeight * INFO_AFSTAND;
-
-      if (body.classList.contains('info-open') &&
-          Math.abs(window.pageYOffset - infoY) > grens) {
-        body.classList.remove('info-open');
-      }
-
-      vermijdOverlap();
-
-      document.querySelectorAll('.item.open').forEach(function (fig) {
-        var vanaf = parseFloat(fig.dataset.openY);
-        if (isNaN(vanaf)) { fig.dataset.openY = window.pageYOffset; return; }
-        if (Math.abs(window.pageYOffset - vanaf) > grens) {
-          fig.classList.remove('open');
-          delete fig.dataset.openY;
-        }
-      });
-    }, { passive: true });
-
-    function maakKaart(el) {
-      var nw = el.naturalWidth || el.videoWidth, nh = el.naturalHeight || el.videoHeight;
-      if (!nw || !nh) return null;
-      var c = document.createElement('canvas'); c.width = 16; c.height = 16;
-      var ctx = c.getContext('2d', { willReadFrequently: true });
-      try {
-        ctx.drawImage(el, 0, 0, 16, 16);
-        var d = ctx.getImageData(0, 0, 16, 16).data;
-        var kaart = [];
-        for (var i = 0; i < 256; i++) {
-          kaart.push(0.2126 * d[i*4] + 0.7152 * d[i*4+1] + 0.0722 * d[i*4+2]);
-        }
-        return kaart;
-      } catch (e) { return null; }
-    }
-
-    function helderheidOpPunt(el, x, y) {
-      var kaart = (el.tagName === 'VIDEO') ? maakKaart(el)
-                  : (el.__kaart || (el.__kaart = maakKaart(el)));
-      if (!kaart) return 255;
-      var r = el.getBoundingClientRect();
-      var nw = el.naturalWidth || el.videoWidth, nh = el.naturalHeight || el.videoHeight;
-      var schaal = Math.max(r.width / nw, r.height / nh);
-      var offX = (r.width - nw * schaal) / 2, offY = (r.height - nh * schaal) / 2;
-      var mx = (x - r.left - offX) / (nw * schaal), my = (y - r.top - offY) / (nh * schaal);
-      var kx = Math.min(15, Math.max(0, Math.floor(mx * 16)));
-      var ky = Math.min(15, Math.max(0, Math.floor(my * 16)));
-      return kaart[ky * 16 + kx];
-    }
-
-    function peilLogo() {
-      [now, neu].forEach(function (span) {
-        var r = span.getBoundingClientRect();
-        if (!r.width) return;
-        var y = r.top + r.height / 2;
-        var lichtst = 0, punten = [r.left + r.width * 0.15, r.left + r.width * 0.5, r.left + r.width * 0.85];
-        punten.forEach(function (px) {
-          var el = document.elementFromPoint(px, y);
-          var lum = (el && (el.tagName === 'IMG' || el.tagName === 'VIDEO'))
-                    ? helderheidOpPunt(el, px, y) : 255;
-          if (lum > lichtst) lichtst = lum;
-        });
-        span.style.color = (lichtst < 70) ? '#fff' : '#000';
-      });
-    }
-    window.addEventListener('scroll', peilLogo, { passive: true });
-    setInterval(peilLogo, 400);
-
-    function zetMerk() {
+    var ankerNow = null, ankerNew = null;
+    function zetAnkers(rond) {
       now.style.transform = ''; neu.style.transform = '';
       var a = now.getBoundingClientRect(),
           b = neu.getBoundingClientRect(),
           vw = window.innerWidth,
           mx = (L.mode === 'S') ? 34 : M;
-      now.style.transform = 'translateX(' + (Math.round(mx - a.left) / SCHAAL).toFixed(2) + 'px)';
-      neu.style.transform = 'translateX(' + (Math.round((vw - mx) - b.right) / SCHAAL).toFixed(2) + 'px)';
+      if (rond || ankerNow === null) {
+        var tn = Math.round((mx - a.left) / SCHAAL),
+            tw = Math.round(((vw - mx) - b.right) / SCHAAL);
+        ankerNow = a.left + tn * SCHAAL;
+        ankerNew = b.right + tw * SCHAAL;
+        now.style.transform = 'translateX(' + tn.toFixed(2) + 'px)';
+        neu.style.transform = 'translateX(' + tw.toFixed(2) + 'px)';
+      } else {
+        now.style.transform = 'translateX(' + ((ankerNow - a.left) / SCHAAL).toFixed(2) + 'px)';
+        neu.style.transform = 'translateX(' + ((ankerNew - b.right) / SCHAAL).toFixed(2) + 'px)';
+      }
     }
+    function zetMerk() { zetAnkers(true); }
 
-    function play(dir) {
+    function play(delta) {
       if (played) return;
       played = true;
-
-      var ph = document.querySelector('.opening .ph');
-      var dist = (window.innerHeight + ph.offsetHeight) / 2 + 20;
-      ph.style.transition = 'none';
-      ph.style.transform = 'translateY(' + ((dir < 0 ? -1 : 1) * dist) + 'px)';
-      ph.style.opacity = '1';
-      void ph.offsetWidth;
-      ph.style.transition = '';
-      ph.classList.add('animate');
-      ph.style.transform = 'translateY(0)';
-
       zetMerk();
       body.classList.add('opened');
       setTimeout(function () {
-        body.classList.add('unlocked');
-        addUp(); addUp();
-        var vrij = function () {
-          body.classList.add('stroom');
-          window.removeEventListener('wheel', vrij);
-          window.removeEventListener('touchmove', vrij);
-          window.removeEventListener('keydown', vrij);
-        };
-        window.addEventListener('wheel', vrij, { passive: true });
-        window.addEventListener('touchmove', vrij, { passive: true });
-        window.addEventListener('keydown', vrij);
-      }, 600);
+        if (delta < 0) toonBoven(); else toonOnder();
+      }, 120);
+      setTimeout(function () { splitsKlaar = true; }, 420);
+    }
+
+    var infoBoven = false, infoOnder = false,
+        bovenGezien = false, onderGezien = false,
+        stilTot = 0;
+    function toonOnder() {
+      infoOnder = true; onderGezien = true;
+      document.getElementById('regelonder').classList.add('aan');
+      if (infoBoven) { infoBoven = false; document.getElementById('regelboven').classList.remove('aan'); }
+    }
+    function toonBoven() {
+      infoBoven = true; bovenGezien = true;
+      document.getElementById('regelboven').classList.add('aan');
+      if (infoOnder) { infoOnder = false; document.getElementById('regelonder').classList.remove('aan'); }
+    }
+    var splitsKlaar = false;
+
+    function duw(delta) {
+      if (!played) { play(delta); return; }
+      if (!splitsKlaar) return;
+      var nuFase = performance.now();
+      if (nuFase < stilTot) return;
+      if (delta > 0 && !infoOnder) {
+        toonOnder();
+        stilTot = nuFase + 350;
+        return;
+      }
+      if (delta < 0 && !infoBoven) {
+        toonBoven();
+        stilTot = nuFase + 350;
+        return;
+      }
     }
 
     window.addEventListener('wheel', function (e) {
-      if (played) return;
-      if (e.cancelable) e.preventDefault();
-      play(e.deltaY < 0 ? -1 : 1);
-    }, { passive: false });
+      duw(e.deltaY);
+    }, { passive: true });
 
-    var touchY = null;
-    window.addEventListener('touchstart', function (e) { touchY = e.touches[0].clientY; }, { passive: true });
+    var touchVorigY = null;
+    window.addEventListener('touchstart', function (e) {
+      touchVorigY = e.touches[0].clientY;
+    }, { passive: true });
     window.addEventListener('touchmove', function (e) {
-      if (played) return;
       if (e.cancelable) e.preventDefault();
-      var dy = touchY === null ? 1 : touchY - e.touches[0].clientY;
-      play(dy < 0 ? -1 : 1);
+      var y = e.touches[0].clientY;
+      var dy = (touchVorigY === null) ? 1 : touchVorigY - y;
+      touchVorigY = y;
+      duw(dy * 2.5);
     }, { passive: false });
+    window.addEventListener('touchend', function () { touchVorigY = null; }, { passive: true });
 
     window.addEventListener('keydown', function (e) {
-      if (played) return;
-      var down = [' ', 'ArrowDown', 'PageDown'].indexOf(e.key) >= 0,
-          up   = ['ArrowUp', 'PageUp'].indexOf(e.key) >= 0;
-      if (!down && !up) return;
+      var omlaag = [' ', 'ArrowDown', 'PageDown'].indexOf(e.key) >= 0,
+          omhoog = ['ArrowUp', 'PageUp'].indexOf(e.key) >= 0;
+      if (!omlaag && !omhoog) return;
       if (e.cancelable) e.preventDefault();
-      play(up ? -1 : 1);
+      duw(omhoog ? -160 : 160);
     });
 
-    var lastMode = L.mode;
     var lastW = document.documentElement.clientWidth;
-    var herbouwTimer = null;
 
     var stilTimer = null;
     function zetMerkStil() {
@@ -659,26 +221,8 @@
       var w = document.documentElement.clientWidth;
       if (w === lastW) return;
       lastW = w;
-      applyVars();
+      L = layout();
       if (played) zetMerkGecontroleerd();
-
-      clearTimeout(herbouwTimer);
-      herbouwTimer = setTimeout(function () {
-        if (L.mode === lastMode) return;
-        lastMode = L.mode;
-        bouwBezig = true;
-        beeldGebruikt = {};
-        var deel = window.pageYOffset / Math.max(1, document.documentElement.scrollHeight);
-        [feed, feedUp].forEach(function (box) {
-          var n = Math.min(box.querySelectorAll('.grid').length, 4);
-          box.innerHTML = '';
-          for (var i = 0; i < n; i++) box.appendChild(buildGrid());
-        });
-        document.querySelectorAll('.cap').forEach(lijnUit);
-        window.scrollTo(0, deel * document.documentElement.scrollHeight);
-        if (played) zetMerkGecontroleerd();
-        requestAnimationFrame(function () { bouwBezig = false; });
-      }, 150);
     });
   </script>
 
