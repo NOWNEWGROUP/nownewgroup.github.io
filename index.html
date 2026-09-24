@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NOWNEW</title>
 <meta name="description" content="NOWNEW and NOWNEW B.V., Amsterdam. Registered under KvK 67855407 with VAT NL002277924B95, and KvK 81255403 with VAT NL862020736B01. Contact info@nownewgroup.com.">
 <link rel="canonical" href="https://nownewgroup.com/">
@@ -41,9 +41,7 @@
   }
 
   .markwrap {
-    position: fixed; z-index: 3; pointer-events: none;
-    top: env(safe-area-inset-top, 0px); bottom: env(safe-area-inset-bottom, 0px);
-    left: 0; right: 0;
+    position: fixed; inset: 0; z-index: 3; pointer-events: none;
     display: flex; align-items: center; justify-content: center;
   }
   .mark {
@@ -63,15 +61,13 @@
   .regel {
     position: fixed; left: 0; right: 0;
     text-align: center;
-
     font-size: 13.75px; letter-spacing: 0.017em; line-height: 1.6;
     padding: 0 40px;
     visibility: hidden;
     will-change: transform;
 
-    --glij: 0.25s;
-    transition: transform var(--glij) cubic-bezier(0.45, 0, 0.55, 1),
-                visibility 0s var(--glij);
+    transition: transform 0.25s cubic-bezier(0.45, 0, 0.55, 1),
+                visibility 0s 0.25s;
   }
   .regel a { color: #000; text-decoration: none; }
 
@@ -83,19 +79,15 @@
   #regelonder { bottom: 40px; transform: translateY(calc(100% + 41px)); }
   .regel.aan {
     visibility: visible;
-    transition: transform var(--glij) cubic-bezier(0.45, 0, 0.55, 1);
+    transition: transform 0.25s cubic-bezier(0.45, 0, 0.55, 1);
   }
 
   #regelboven.aan { transform: translateY(0); }
   #regelonder.aan { transform: translateY(0); }
   @media (max-width: 639px) {
-
-    .regel { padding: 0 34px; --glij: 0.38s; }
-    #regelboven { top: calc(34px + env(safe-area-inset-top, 0px));
-                  transform: translateY(calc(-100% - 41px - env(safe-area-inset-top, 0px))); }
-    #regelonder { bottom: calc(34px + env(safe-area-inset-bottom, 0px));
-                  transform: translateY(calc(100% + 41px + env(safe-area-inset-bottom, 0px) + 120px)); }
-    #regelboven.aan, #regelonder.aan { transform: translateY(0); }
+    .regel { padding: 0 34px; }
+    #regelboven { top: 34px; }
+    #regelonder { bottom: 34px; }
   }
 </style>
 </head>
